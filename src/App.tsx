@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {
+  useState
+} from 'react';
 
-function App() {
+import { Test } from './components/test';
+
+import {
+  ButtonTest,
+  GlobalStyle
+} from './appStyle';
+
+export const App: React.FC = () => {
+  
+  const [isFullScreen, setFullScreen] = useState(false);
+
+  const handleStartTest = () => {
+
+    const element = document.documentElement as any;
+
+    if (!isFullScreen) {
+
+      if (element.requestFullscreen) element.requestFullscreen();
+      else if (element.mozRequestFullScreen) element.mozRequestFullScreen();
+      else if (element.webkitRequestFullscreen) element.webkitRequestFullscreen();
+      else if (element.msRequestFullscreen) element.msRequestFullscreen();
+
+      setFullScreen(true);
+
+    }
+
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+    <>
+
+      <GlobalStyle />
+
+      {!isFullScreen && <ButtonTest onClick={handleStartTest}>Запустить тест</ButtonTest>}
+
+      {isFullScreen && <Test />}
+
+    </>
+
+  );
+};
